@@ -36,10 +36,26 @@ class VideoSchema(ma.Schema):
 
 
 # Init Schema
-video_schema = VideoSchema
+video_schema = VideoSchema()
 videos_schema = VideoSchema(many=True)
 
+
 # db.create_all() --This should be run only once at the start of the app, commented out because if ran each time, db will reinitialize each time.
+
+# Create A video
+@app.route('/video', methods=['POST'])
+def add_video():
+    name = request.json['name']
+    views = request.json['views']
+    likes = request.json['likes']
+
+    new_video = VideoModel(name, views, likes)
+
+    db.session.add(new_video)
+    db.session.commit()
+
+    return video_schema.jsonify(new_video)
+
 
 # run Server
 if __name__ == '__main__':
