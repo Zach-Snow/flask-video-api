@@ -57,6 +57,14 @@ def add_video():
     return video_schema.jsonify(new_video)
 
 
+# get all videos list
+@app.route('/video', methods=['GET'])
+def get_videos():
+    all_videos = VideoModel.query.all()
+    result = videos_schema.dump(all_videos)
+    return jsonify(result)
+
+
 # run Server
 if __name__ == '__main__':
     app.run(debug=True)
