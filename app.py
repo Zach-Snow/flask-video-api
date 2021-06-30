@@ -90,6 +90,15 @@ def get_video(id):
     return video_schema.jsonify(video)
 
 
+# delete video
+@app.route('/video/<id>', methods=['DELETE'])
+def delete_video(id):
+    video = VideoModel.query.get(id)
+    db.session.delete(video)
+    db.session.commit()
+    return video_schema.jsonify(video)
+
+
 # run Server
 if __name__ == '__main__':
     app.run(debug=True)
