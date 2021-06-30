@@ -57,12 +57,37 @@ def add_video():
     return video_schema.jsonify(new_video)
 
 
+# Update A video
+@app.route('/video/<id>', methods=['PUT'])
+def update_video(id):
+    video = VideoModel.query.get(id)
+
+    name = request.json['name']
+    views = request.json['views']
+    likes = request.json['likes']
+
+    video.name = name
+    video.views = views
+    video.likes = likes
+
+    db.session.commit()
+
+    return video_schema.jsonify(video)
+
+
 # get all videos list
 @app.route('/video', methods=['GET'])
 def get_videos():
     all_videos = VideoModel.query.all()
     result = videos_schema.dump(all_videos)
     return jsonify(result)
+
+
+# get one video
+@app.route('/video/<id>', methods=['GET'])
+def get_video(id):
+    video = VideoModel.query.get(id)
+    return video_schema.jsonify(video)
 
 
 # run Server
